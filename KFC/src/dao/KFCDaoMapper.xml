@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace 是接口的全路径,必须是唯一的
+	一个sql映射文件对应一个接口
+ -->
+<mapper namespace="dao.KFCDao">
+
+    <select id="findAll" resultType="entity.KFC" >
+        SELECT k.*,ad.address,ad.area_id,a.area_name
+        FROM kfc k
+        INNER JOIN address ad ON k.address_id = ad.address_id
+        INNER JOIN AREA a ON a.area_id= ad.area_id
+    </select>
+
+    <select id="findKFCByArea" resultType="entity.KFC" >
+        SELECT k.*,ad.address,ad.area_id,a.area_name
+        FROM kfc k
+        INNER JOIN address ad ON k.address_id = ad.address_id
+        INNER JOIN AREA a ON a.area_id= ad.area_id
+        <where>
+            <if test="area_id != 0">
+                AND a.area_id=#{area_id}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert">
+        INSERT INTO kfc(name,start_time,work_time,address_id)
+        VALUES (#{name},#{start_time},#{work_time},#{address_id})
+    </insert>
+
+    <select id="findAllArea" resultType="entity.Area">
+        SELECT * FROM area
+    </select>
+</mapper>
